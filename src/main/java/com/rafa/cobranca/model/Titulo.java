@@ -39,7 +39,7 @@ public class Titulo {
 	@NotNull(message="valor não pode ser nulo seu lindo")
 	@DecimalMin(value = "0.01", message="Menos que 0.01 não pode meu gatinho")
 	@DecimalMax(value="999.99", message="Mais de 999.99 também não pode seu MARAVILHOSO")
-	@NumberFormat(pattern = "#,##0.00")
+	@NumberFormat(pattern = "#,###.00")
 	private BigDecimal valor;
 
 	@Enumerated(EnumType.STRING)
