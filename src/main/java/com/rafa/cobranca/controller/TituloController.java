@@ -40,11 +40,16 @@ public class TituloController {
 			return CADASTRO_VIEW;
 			
 		}
+		try {
 		titulos.save(titulo);
-		attributes.addFlashAttribute("mensagem","Titulo salvo com com sucesso");
+		attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
+		//mv.addObject("todosStatusTitulo", StatusTitulo.values());
 		return "redirect:/titulos/novo";
-	}
-	
+		} catch (IllegalArgumentException e) {
+			errors.rejectValue("dataVencimento", null, e.getMessage());
+			return CADASTRO_VIEW;
+		}
+		}
 	@RequestMapping
 	public ModelAndView pesquisar() {
 		List<Titulo> todosTitulos = titulos.findAll();

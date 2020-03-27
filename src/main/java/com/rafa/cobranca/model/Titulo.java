@@ -23,86 +23,87 @@ import java.util.Date;
 @Entity
 public class Titulo {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long codigo;
-
-	@NotEmpty(message="Faltou uma descrição seu garanhão")
-	@Size(max = 20, message="Não pode conter masis de 20 digitos em Deus Grego S2")
-	private String descricao;
-
-	@NotNull(message="Coloca uma data ai dlç!")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	private Date dataVencimento;
-
-	@NotNull(message="valor não pode ser nulo seu lindo")
-	@DecimalMin(value = "0.01", message="Menos que 0.01 não pode meu gatinho")
-	@DecimalMax(value="999.99", message="Mais de 999.99 também não pode seu MARAVILHOSO")
-	@NumberFormat(pattern = "#,###.00")
-	private BigDecimal valor;
-
-	@Enumerated(EnumType.STRING)
-	private StatusTitulo status;
-
-	public Long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
-
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long codigo;
+		
+		@NotEmpty(message ="Descrição é obrigatório")
+		@Size(max= 60, message= "A descrição não pode conter mais de 90 caracteres")
+		private String descricao;
+		
+		@NotNull(message = "Date de vencimento é obrigatória")
+		@DateTimeFormat(pattern = "dd/MM/yyyy")
+		@Temporal(TemporalType.DATE)
+		private Date dataVencimento;
+		
+		@NotNull(message ="Valor é obrigatório")
+		@DecimalMin(value = "0.01", message = "Valornão pode ser menro que 0,01")
+		@DecimalMax(value = "9999999999.99", message = "Valor não pode ser maior que 9.999.999,99")
+		@NumberFormat(pattern = "#,##0.00")
+		private BigDecimal valor;
+		
+		@Enumerated(EnumType.STRING)
+		private StatusTitulo status;
+		
+		
+		
+		public Long getCodigo() {
+			return codigo;
+		}
+		public void setCodigo(Long codigo) {
+			this.codigo = codigo;
+		}
 		public String getDescricao() {
 			return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Date getDataVencimento() {
-		return dataVencimento;
-	}
-
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
-	}
-
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
-	public StatusTitulo getStatus() {
-		return status;
-	}
-
-	public void setStatus(StatusTitulo status) {
-		this.status = status;
-	}
-
-	public boolean isPendente() {
-		return StatusTitulo.PENDENTE.equals(this.status);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Titulo other = (Titulo) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
+		}
+		public void setDescricao(String desccricao) {
+			this.descricao = desccricao;
+		}
+		public Date getDataVencimento() {
+			return dataVencimento;
+		}
+		public void setDataVencimento(Date dataVencimento) {
+			this.dataVencimento = dataVencimento;
+		}
+		public BigDecimal getValor() {
+			return valor;
+		}
+		public void setValor(BigDecimal valor) {
+			this.valor = valor;
+		}
+		public StatusTitulo getStatus() {
+			return status;
+		}
+		public void setStatus(StatusTitulo status) {
+			this.status = status;
+		}
+		public boolean isPendente() {
+			return StatusTitulo.PENDENTE.equals(this.status);
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
 				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		return true;
-	}
+			if (getClass() != obj.getClass())
+				return false;
+			Titulo other = (Titulo) obj;
+			if (codigo == null) {
+				if (other.codigo != null)
+					return false;
+			} else if (!codigo.equals(other.codigo))
+				return false;
+			return true;
+		}
+		
+		
 }
