@@ -1,22 +1,32 @@
+@media(min-width: 768px){
+	.card card-body {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	.alert{
+		margin-left:10px;
+		margin-right:10px;
+		margin-top:10px;
+	}
+	.has-error{
+		color:red;
+	}
+
+}
+
+
 .navbar-brand {
-	padding-top: 12px;
-}
-.panel-default {
-	margim-left: 10px;
-	margin-right: 10px;
+	padding-top: 8px;
 }
 
-.alert {
-	margin-left: 10px;
-	margin-right: 10px;
 }
 
-.aw-link-panel {
+.aw-link-card{
 	float: right;
 	padding: 0px;
 }
-
-.aws-titulo-panel {
+.aw-titulo-card{
 	float: left;
 	padding-top: 2px;
+	
 }

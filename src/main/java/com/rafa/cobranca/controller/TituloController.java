@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.rafa.cobranca.model.StatusTitulo;
 import com.rafa.cobranca.model.Titulo;
 import com.rafa.cobranca.repository.Titulos;
+import com.rafa.cobranca.service.CadastroTituloService;
 
 @Controller
 @RequestMapping("/titulos")
@@ -43,7 +44,6 @@ public class TituloController {
 		try {
 		titulos.save(titulo);
 		attributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
-		//mv.addObject("todosStatusTitulo", StatusTitulo.values());
 		return "redirect:/titulos/novo";
 		} catch (IllegalArgumentException e) {
 			errors.rejectValue("dataVencimento", null, e.getMessage());
@@ -65,6 +65,14 @@ public class TituloController {
 		return mv;
 		
 	}
+
+	/*@RequestMapping(value="{codigo}", method = RequestMethod.POST)
+	public String excluir(@PathVariable Long codigo, RedirectAttributes attributes) {
+		CadastroTituloService.excluir(codigo);
+
+		attributes.addFlashAttribute("mensagem", "Titulo excluido com sucesso!");
+		return "redirect:/titulos";
+	}*/
 	
 	@ModelAttribute("todosStatusTitulo")
 	public List<StatusTitulo> todosStatusTitulo(){
