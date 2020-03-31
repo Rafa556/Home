@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.rafa.cobranca.model.StatusTitulo;
 import com.rafa.cobranca.model.Titulo;
 import com.rafa.cobranca.repository.Titulos;
-import com.rafa.cobranca.service.CadastroTituloService;
 
 @Controller
 @RequestMapping("/titulos")
