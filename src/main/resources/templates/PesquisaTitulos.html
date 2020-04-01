@@ -4,92 +4,70 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="LayoutPadrao">
 <head>
-<title>Pesquisa de titulos</title>
+	<title>Pesquisa de títulos</title>
 </head>
-
 <section layout:fragment="conteudo">
-	<div layout:insert="MensagemGeral"></div>
-
-	<div class="card card-body">
-		<div class="card-body">
-			<div class="clearfix">
-				<h2 class="card-title aw-titulo-card">Pesquisa de Titulos</h2>
-				<a class="btn btn-link aw-link-card" href="/titulos/novo">Novo
-					titulo</a>
+	<div class="container-form">
+		<div class="panel">
+			<p class="internal-title">Pesquisa de títulos</p>
+			<a class="back-search" href="/titulos/novo">Novo título</a>
+		</div>
+		<div class="container-search">
+		<div class="search-box">
+			<form method="GET" class="search-form" action="/titulos" th:object="${filtro}">
+				<input class="search-input" type="text" placeholder="Qual título você está procurando?" id="search" autofocus="autofocus" th:field="*{descricao}"></input>
+				<button type="submit" class="btn-2"><i class="fa fa-search"></i></button>
+			</form>
+		</div>
+		<div class="table-view">
+			<table>
+				<thead>
+					<tr>
+						<th class="table-title column-1">#</th>
+						<th class="table-title column-2 table-left">Descrição</th>
+						<th class="table-title column-3">Data de vencimento</th>
+						<th class="table-title column-4 table-right">Valor</th>
+						<th class="table-title column-5">Status</th>
+						<th class="table-title column-6"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="titulo : ${titulos}">
+						<td class="table-center" th:text="${titulo.codigo}">1</td>
+						<td class="table-left" th:text="${titulo.descricao}"></td>
+						<td class="table-center" th:text="${#dates.format(titulo.dataVencimento, 'dd/MM/yyyy')}"></td>
+						<td class="table-right" th:text="|R$ ${#numbers.formatDecimal(titulo.valor, 0, 'POINT', 2, 'COMMA')}|"></td>
+						<td class="table-center" th:attr="data-role=${titulo.codigo}"><span th:text="${titulo.status.descricao}" th:classappend="${titulo.pendente ? 'label-red' : 'label-green'}"></span></td>
+						<td class="table-center icons">
+							<a class="edit tooltip" th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"><i class="fa fa-pencil-alt"></i><span class="tooltiptext">Editar</span></a>
+							<a class="remove tooltip" id="modalRemove" th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}" th:href="@{/titulos/excluir/{codigo}(codigo=${titulo.codigo})}"><i class="fa fa-times"></i><span class="tooltiptext">Excluir</span></a>
+							<a class="update tooltip js-atualizar-status" th:if="${titulo.pendente}" th:attr="data-codigo=${titulo.codigo}" th:href="@{/titulos/{codigo}/receber(codigo=${titulo.codigo})}"><i class="far fa-check-circle"></i><span class="tooltiptext">Receber</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td class="no-data" th:if="${#lists.isEmpty(titulos)}">Nenhum título foi encontrado</td>
+					</tr>
+				</tbody>
+			</table>
 			</div>
 		</div>
-
-		<div class="card-body">
-			<form method="GET" class="form-horizontal" action="/titulos"
-				th:object="${filtro}">
-				<div class="form-group">
-					<div class="col-sm-4">
-						<div class="input-group">
-							<input class="form-control"
-								placeholder='Qual o titulo você está procurando?' th:field="*{descricao}" name="descricao"></input>
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default">
-									<i class=""></i>
-								</button>
-							</span>
+		<div>
+			<div id="myModal">
+				<form th:attr="data-url-base='/titulos'" method="POST">
+					<input type="hidden" name="_method" value="DELETE"/>
+					<div class="modal-content">
+						<div class="modal-title">
+							<span class="modal-text">Tem certeza de que quer excluir?</span>
+							<a class="modalClose"><span class="close">&times;</span></a>
+						</div>
+						<div class="modalBtn">
+							<button class="modal-btn-no">Não</button>
+							<button class="modal-btn-yes">Sim</button>
 						</div>
 					</div>
-				</div>
-
-			</form>
-
-			<div class="table-responsive">
-				<table class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th class="text-center" width="10%">#</th>
-							<th class="text-center ">Descrição</th>
-							<th class="text-center " width="15%">Data de vencimento</th>
-							<th class="text-center " width="10%">Valor</th>
-							<th class="text-center " width="10%">Status</th>
-							<th class=""></th>
-
-
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="titulo : ${titulos}">
-							<td class="text-center" th:text="${titulo.codigo}">1</td>
-							<td th:text="${titulo.descricao}"></td>
-							<td class="text-center" th:text="${{titulo.dataVencimento}}"></td>
-							<td class="text-center" th:text="|R$ ${{titulo.valor}}|"></td>
-							<td class="text-center" th:attr="data-role=${titulo.codigo}">
-								<span class="badge " th:text="${titulo.status.descricao}"
-								th:classappend="${titulo.pendente ? 'badge-danger' : 'badge-success'}">
-							</span>
-							</td>
-							<td class="text-center"><a class="btn btn-link btn-xs"
-								th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
-								title="Editar" rel="tooltip" data-placement='top'>
-							</a> <a class="btn btn-link btn-xs" data-toggle="modal"
-								data-target="#confirmacaoExclusaoModal"
-								th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}"
-								title="Excluir" rel="tooltip" data-placement='top'>
-							</a> <a class="btn btn-link btn-xs js-atualizar-status"
-								th:if="${titulo.pendente}" title="Receber" rel="tooltip"
-								data-placement='top' th:attr="data-codigo=${titulo.codigo}"
-								th:href="@{/titulos/{codigo}/receber(codigo=${titulo.codigo})}">
-							</a></td>
-
-						</tr>
-						<tr>
-							<td colspan="6" th:if="${#lists.isEmpty(titulos)}">Nenhum
-								titulo foi encontrado</td>
-						</tr>
-					</tbody>
-				</table>
+				</form>
 			</div>
 		</div>
-
-		<div layout:insert="DialogoConfirmacaoExclusao"></div>
-
 	</div>
-
 </section>
-
 </html>
